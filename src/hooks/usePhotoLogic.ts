@@ -26,8 +26,16 @@ export const usePhotoLogic = () => {
 
   // 相册选择
   const pickImage = async () => {
+    // 请求相册权限
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('提示', '请开启相册权限');
+      return;
+    }
+
     const res = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true, quality: 0.8
+      allowsEditing: true, 
+      quality: 0.8
     });
     if (!res.canceled) {
       setOriginalUri(res.assets[0].uri);
@@ -37,7 +45,10 @@ export const usePhotoLogic = () => {
 
   // AI抠图
   const doRemoveBg = async () => {
-    if (!originalUri) { Alert.alert('请选图'); return; }
+    if (!originalUri) { 
+      Alert.alert('请选图'); 
+      return; 
+    }
     if (!isVip && freeCount <= 0 && adCount <= 0) {
       Alert.alert('次数已用完\n看广告获得次数或开通会员');
       return;
@@ -64,7 +75,7 @@ export const usePhotoLogic = () => {
         adCount > 0 ? useAdCount() : useFreeCount();
       }
     } catch (e) {
-      Alert.alert('抠图失败');
+      Alert.alert('抠图失败', '请检查网络或稍后重试');
     } finally {
       setLoading(false);
     }
@@ -72,7 +83,7 @@ export const usePhotoLogic = () => {
 
   // 看广告加次数
   const watchAd = () => {
-    Alert.alert('广告播放完成');
+    Alert.alert('广告播放完成', '已获得3次免费次数');
     addAdCount(3);
   };
 
