@@ -1,18 +1,27 @@
+import { useState, useCallback } from 'react';
 import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
-import { Card, Text, Button } from 'react-native-paper';
+import { Card, Text } from 'react-native-paper';
 import { router } from 'expo-router';
+import { LanguageSelector } from '../../src/components/LanguageSelector';
+import { i18n } from '../../src/i18n';
 
 export default function HomeScreen() {
+  const [, forceUpdate] = useState({});
+
+  const onLanguageChange = useCallback(() => {
+    forceUpdate({});
+  }, []);
+
   const goToIDPhoto = () => {
     router.push('/idphoto');
   };
 
   const goToOldPhoto = () => {
-    alert('老照片修复功能即将上线');
+    alert(i18n.t('old_photo') + ' ' + i18n.t('success') + '...');
   };
 
   const goToCartoon = () => {
-    alert('动漫头像功能即将上线');
+    alert(i18n.t('cartoon') + ' ' + i18n.t('success') + '...');
   };
 
   const goToVip = () => {
@@ -21,57 +30,58 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.title}>
-        🎨 PhotoKit AI
-      </Text>
-      <Text variant="bodyLarge" style={styles.subtitle}>
-        一键制作证件照、修复老照片、生成动漫头像
-      </Text>
+      <View style={styles.header}>
+        <View style={styles.titleRow}>
+          <Text variant="headlineMedium" style={styles.title}>
+            🎨 PhotoKit AI
+          </Text>
+          <LanguageSelector onLanguageChange={onLanguageChange} />
+        </View>
+        <Text variant="bodyLarge" style={styles.subtitle}>
+          {i18n.t('app_subtitle')}
+        </Text>
+      </View>
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        {/* 证件照卡片 */}
         <TouchableOpacity onPress={goToIDPhoto} style={styles.button}>
           <Card style={styles.card} mode="outlined">
             <Card.Content>
-              <Text variant="titleLarge">📸 AI 证件照</Text>
+              <Text variant="titleLarge">📸 {i18n.t('id_photo')}</Text>
               <Text variant="bodyMedium">
-                一键制作标准证件照，支持红/蓝/白底色
+                {i18n.t('id_photo_desc')}
               </Text>
             </Card.Content>
           </Card>
         </TouchableOpacity>
 
-        {/* 老照片修复卡片 */}
         <TouchableOpacity onPress={goToOldPhoto} style={styles.button}>
           <Card style={styles.card} mode="outlined">
             <Card.Content>
-              <Text variant="titleLarge">🌟 老照片修复</Text>
+              <Text variant="titleLarge">🌟 {i18n.t('old_photo')}</Text>
               <Text variant="bodyMedium">
-                AI 智能修复，让老照片焕发新生
+                {i18n.t('old_photo_desc')}
               </Text>
             </Card.Content>
           </Card>
         </TouchableOpacity>
 
-        {/* 动漫头像卡片 */}
         <TouchableOpacity onPress={goToCartoon} style={styles.button}>
           <Card style={styles.card} mode="outlined">
             <Card.Content>
-              <Text variant="titleLarge">🎭 动漫头像</Text>
+              <Text variant="titleLarge">🎭 {i18n.t('cartoon')}</Text>
               <Text variant="bodyMedium">
-                将照片转换成动漫风格
+                {i18n.t('cartoon_desc')}
               </Text>
             </Card.Content>
           </Card>
         </TouchableOpacity>
 
-        {/* 会员订阅卡片 */}
         <TouchableOpacity onPress={goToVip} style={styles.button}>
           <Card style={[styles.card, styles.vipCard]} mode="outlined">
             <Card.Content>
-              <Text variant="titleLarge">⭐ 高级会员</Text>
+              <Text variant="titleLarge">⭐ {i18n.t('vip')}</Text>
               <Text variant="bodyMedium">
-                无限次制作 • 无水印 • 无广告
+                {i18n.t('vip_desc')}
               </Text>
             </Card.Content>
           </Card>
@@ -88,12 +98,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 40,
   },
+  header: {
+    marginBottom: 24,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   title: {
     fontWeight: 'bold',
     marginBottom: 8,
   },
   subtitle: {
-    marginBottom: 24,
+    marginTop: 8,
     color: '#666',
   },
   scrollView: {

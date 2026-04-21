@@ -1,61 +1,76 @@
+import { useState, useCallback } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Button, Card } from 'react-native-paper';
 import { usePurchase } from '../src/hooks/usePurchase';
+import { i18n } from '../src/i18n';
 
 export default function VipScreen() {
   const { restore } = usePurchase();
+  const [, forceUpdate] = useState({});
 
   const handleRestore = async () => {
     const success = await restore();
     if (success) {
-      alert('购买已恢复');
+      alert(i18n.t('success'));
     } else {
-      alert('未找到购买记录');
+      alert(i18n.t('error'));
     }
+  };
+
+  const handleWeekly = () => {
+    alert('Weekly: $3.99 - ' + i18n.t('short_term'));
+  };
+
+  const handleMonthly = () => {
+    alert('Monthly: $7.99 - ' + i18n.t('most_popular'));
+  };
+
+  const handleYearly = () => {
+    alert('Yearly: $39.99 - ' + i18n.t('best_value'));
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>⭐ 解锁高级会员</Text>
+        <Text style={styles.title}>⭐ {i18n.t('unlock_vip')}</Text>
         <Text style={styles.subtitle}>
-          无限制作证件照 | 无水印 | 无广告 | 高清导出
+          {i18n.t('vip_benefits')}
         </Text>
       </View>
 
-      <Card style={[styles.card, styles.clickable]} onPress={() => {}}>
+      <Card style={[styles.card, styles.clickable]} onPress={handleWeekly}>
         <Card.Content>
-          <Text style={styles.planTitle}>周会员</Text>
-          <Text style={styles.price}>$3.99 / 周</Text>
-          <Text style={styles.desc}>短期使用首选</Text>
+          <Text style={styles.planTitle}>{i18n.t('weekly')}</Text>
+          <Text style={styles.price}>$3.99 / {i18n.t('weekly')}</Text>
+          <Text style={styles.desc}>{i18n.t('short_term')}</Text>
         </Card.Content>
       </Card>
 
-      <Card style={[styles.card, styles.clickable]} onPress={() => {}}>
+      <Card style={[styles.card, styles.clickable]} onPress={handleMonthly}>
         <Card.Content>
-          <Text style={styles.planTitle}>月会员</Text>
-          <Text style={styles.price}>$7.99 / 月</Text>
-          <Text style={styles.desc}>最受欢迎</Text>
+          <Text style={styles.planTitle}>{i18n.t('monthly')}</Text>
+          <Text style={styles.price}>$7.99 / {i18n.t('monthly')}</Text>
+          <Text style={styles.desc}>{i18n.t('most_popular')}</Text>
         </Card.Content>
       </Card>
 
-      <Card style={[styles.card, styles.bestCard, styles.clickable]} onPress={() => {}}>
+      <Card style={[styles.card, styles.bestCard, styles.clickable]} onPress={handleYearly}>
         <Card.Content>
-          <Text style={styles.planTitle}>年会员</Text>
-          <Text style={styles.price}>$39.99 / 年</Text>
-          <Text style={styles.desc}>省 60%｜性价比之王</Text>
+          <Text style={styles.planTitle}>{i18n.t('yearly')}</Text>
+          <Text style={styles.price}>$39.99 / {i18n.t('yearly')}</Text>
+          <Text style={styles.desc}>{i18n.t('best_value')}</Text>
         </Card.Content>
       </Card>
 
       <View style={styles.buttons}>
         <Button mode="contained" style={styles.btn} onPress={handleRestore}>
-          恢复购买
+          {i18n.t('restore')}
         </Button>
       </View>
 
       <View style={styles.foot}>
         <Text style={styles.footText}>
-          付款后将自动解锁全部功能 • 支持随时取消
+          {i18n.t('payment_notice')}
         </Text>
       </View>
     </ScrollView>

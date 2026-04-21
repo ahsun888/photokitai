@@ -1,5 +1,6 @@
 import { View, Image, StyleSheet, Text, ScrollView } from 'react-native';
 import { Button, Chip } from 'react-native-paper';
+import { i18n } from '../i18n';
 
 type Props = {
   originalUri: string | null;
@@ -25,29 +26,29 @@ export const IDPhotoUI = ({
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.count}>
-        {isVip ? '⭐ 会员无限次' : `免费：${freeCount} | 广告：${adCount}`}
+        {isVip ? '⭐ ' + i18n.t('vip_unlimited') : `${i18n.t('free_count')}：${freeCount} | ${i18n.t('ad_count')}：${adCount}`}
       </Text>
 
       <View style={styles.preview}>
-        {resultUri ? <Image source={{uri: resultUri}} style={styles.img} /> : 
-         cutoutUri ? <Image source={{uri: cutoutUri}} style={styles.img} /> : 
-         originalUri ? <Image source={{uri: originalUri}} style={styles.img} /> : 
-         <Text style={styles.empty}>选择照片开始制作</Text>}
+        {resultUri ? <Image source={{uri: resultUri}} style={styles.img} /> :
+         cutoutUri ? <Image source={{uri: cutoutUri}} style={styles.img} /> :
+         originalUri ? <Image source={{uri: originalUri}} style={styles.img} /> :
+         <Text style={styles.empty}>{i18n.t('please_select')}</Text>}
       </View>
 
       {cutoutUri && (
         <View style={styles.chipRow}>
-          <Chip selected={bgColor==='white'} onPress={()=>onApplyBg('white')}>白底</Chip>
-          <Chip selected={bgColor==='blue'} onPress={()=>onApplyBg('blue')}>蓝底</Chip>
-          <Chip selected={bgColor==='red'} onPress={()=>onApplyBg('red')}>红底</Chip>
+          <Chip selected={bgColor==='white'} onPress={()=>onApplyBg('white')}>{i18n.t('white_bg')}</Chip>
+          <Chip selected={bgColor==='blue'} onPress={()=>onApplyBg('blue')}>{i18n.t('blue_bg')}</Chip>
+          <Chip selected={bgColor==='red'} onPress={()=>onApplyBg('red')}>{i18n.t('red_bg')}</Chip>
         </View>
       )}
 
       <View style={styles.buttons}>
-        <Button mode="contained" onPress={onPick}>📷 相册选择</Button>
-        {originalUri && <Button mode="contained" loading={loading} onPress={onRemoveBg}>✨ AI抠图</Button>}
-        {resultUri && <Button mode="contained" onPress={onSave}>💾 保存</Button>}
-        {!isVip && <Button mode="contained" onPress={onWatchAd}>🎬 看广告+3次</Button>}
+        <Button mode="contained" onPress={onPick}>📷 {i18n.t('gallery')}</Button>
+        {originalUri && <Button mode="contained" loading={loading} onPress={onRemoveBg}>✨ {i18n.t('ai_cutout')}</Button>}
+        {resultUri && <Button mode="contained" onPress={onSave}>💾 {i18n.t('save')}</Button>}
+        {!isVip && <Button mode="contained" onPress={onWatchAd}>🎬 {i18n.t('watch_ad')}</Button>}
       </View>
     </ScrollView>
   );
@@ -62,3 +63,5 @@ const styles = StyleSheet.create({
   chipRow: { flexDirection:'row', gap:8, marginVertical:16, justifyContent:'center' },
   buttons: { gap:12 }
 });
+
+export default IDPhotoUI;
