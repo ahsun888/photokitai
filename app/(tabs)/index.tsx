@@ -30,7 +30,7 @@ export default function HomeScreen() {
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         {/* 证件照卡片 */}
-        <TouchableOpacity onPress={goToIDPhoto}>
+        <TouchableOpacity onPress={goToIDPhoto} style={styles.button}>
           <Card style={styles.card} mode="outlined">
             <Card.Content>
               <Text variant="titleLarge">📸 AI 证件照</Text>
@@ -42,7 +42,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         {/* 老照片修复卡片 */}
-        <TouchableOpacity onPress={goToOldPhoto}>
+        <TouchableOpacity onPress={goToOldPhoto} style={styles.button}>
           <Card style={styles.card} mode="outlined">
             <Card.Content>
               <Text variant="titleLarge">🌟 老照片修复</Text>
@@ -54,7 +54,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         {/* 动漫头像卡片 */}
-        <TouchableOpacity onPress={goToCartoon}>
+        <TouchableOpacity onPress={goToCartoon} style={styles.button}>
           <Card style={styles.card} mode="outlined">
             <Card.Content>
               <Text variant="titleLarge">🎭 动漫头像</Text>
@@ -66,7 +66,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         {/* 会员订阅卡片 */}
-        <TouchableOpacity onPress={goToVip}>
+        <TouchableOpacity onPress={goToVip} style={styles.button}>
           <Card style={[styles.card, styles.vipCard]} mode="outlined">
             <Card.Content>
               <Text variant="titleLarge">⭐ 高级会员</Text>
@@ -108,5 +108,8 @@ const styles = StyleSheet.create({
   vipCard: {
     borderColor: '#FF6B00',
     borderWidth: 1,
+  },
+  button: {
+    cursor: 'pointer',
   },
 });

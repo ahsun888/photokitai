@@ -23,7 +23,7 @@ export default function VipScreen() {
         </Text>
       </View>
 
-      <Card style={styles.card} onPress={() => {}}>
+      <Card style={[styles.card, styles.clickable]} onPress={() => {}}>
         <Card.Content>
           <Text style={styles.planTitle}>周会员</Text>
           <Text style={styles.price}>$3.99 / 周</Text>
@@ -31,7 +31,7 @@ export default function VipScreen() {
         </Card.Content>
       </Card>
 
-      <Card style={styles.card} onPress={() => {}}>
+      <Card style={[styles.card, styles.clickable]} onPress={() => {}}>
         <Card.Content>
           <Text style={styles.planTitle}>月会员</Text>
           <Text style={styles.price}>$7.99 / 月</Text>
@@ -39,7 +39,7 @@ export default function VipScreen() {
         </Card.Content>
       </Card>
 
-      <Card style={[styles.card, styles.bestCard]} onPress={() => {}}>
+      <Card style={[styles.card, styles.bestCard, styles.clickable]} onPress={() => {}}>
         <Card.Content>
           <Text style={styles.planTitle}>年会员</Text>
           <Text style={styles.price}>$39.99 / 年</Text>
@@ -119,5 +119,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999',
     textAlign: 'center',
+  },
+  clickable: {
+    cursor: 'pointer',
   },
 });
