@@ -1,60 +1,118 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import WebPressable from '../../src/components/WebPressable';
+import { i18n } from '../../src/i18n';
+import LanguageSelector from '../../src/components/LanguageSelector';
 
 export default function Home() {
+  const goToIDPhoto = () => {
+    router.push('/idphoto');
+  };
+
+  const goToOldPhoto = () => {
+    alert('老照片修复功能开发中');
+  };
+
+  const goToCartoon = () => {
+    alert('动漫头像功能开发中');
+  };
+
+  const goToVip = () => {
+    router.push('/vip');
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>PhotoKit AI 证件照</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{i18n.t('app_name')}</Text>
+        <Text style={styles.subtitle}>{i18n.t('app_subtitle')}</Text>
+        <LanguageSelector />
+      </View>
 
-      <WebPressable
-        style={styles.btn}
-        onPress={() => router.push('/idphoto')}
-      >
-        <Text style={styles.btnText}>开始制作证件照</Text>
-      </WebPressable>
+      <View style={styles.cardContainer}>
+        {/* 证件照卡片 */}
+        <WebPressable style={styles.button} onPress={goToIDPhoto}>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>📸 {i18n.t('id_photo')}</Text>
+            <Text style={styles.cardDesc}>{i18n.t('id_photo_desc')}</Text>
+          </View>
+        </WebPressable>
 
-      <WebPressable
-        style={styles.vipBtn}
-        onPress={() => router.push('/vip')}
-      >
-        <Text style={styles.btnText}>会员中心</Text>
-      </WebPressable>
-    </View>
+        {/* 老照片修复卡片 */}
+        <WebPressable style={styles.button} onPress={goToOldPhoto}>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>🌟 {i18n.t('old_photo')}</Text>
+            <Text style={styles.cardDesc}>{i18n.t('old_photo_desc')}</Text>
+          </View>
+        </WebPressable>
+
+        {/* 动漫头像卡片 */}
+        <WebPressable style={styles.button} onPress={goToCartoon}>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>🎭 {i18n.t('cartoon')}</Text>
+            <Text style={styles.cardDesc}>{i18n.t('cartoon_desc')}</Text>
+          </View>
+        </WebPressable>
+
+        {/* 会员订阅卡片 */}
+        <WebPressable style={styles.button} onPress={goToVip}>
+          <View style={[styles.card, styles.vipCard]}>
+            <Text style={styles.cardTitle}>⭐ {i18n.t('vip')}</Text>
+            <Text style={styles.cardDesc}>{i18n.t('vip_desc')}</Text>
+          </View>
+        </WebPressable>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#fff',
+  },
+  scrollContent: {
     padding: 20,
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 30,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 40,
+    marginBottom: 10,
   },
-  btn: {
-    width: '100%',
-    backgroundColor: '#007AFF',
-    padding: 18,
-    borderRadius: 16,
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  vipBtn: {
-    width: '100%',
-    backgroundColor: '#FF6600',
-    padding: 18,
-    borderRadius: 16,
-    alignItems: 'center',
-  },
-  btnText: {
-    color: '#fff',
+  subtitle: {
     fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  cardContainer: {
+    gap: 16,
+  },
+  card: {
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: 16,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  vipCard: {
+    borderColor: '#FF6B00',
+    borderWidth: 2,
+  },
+  cardTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  cardDesc: {
+    fontSize: 14,
+    color: '#666',
+  },
+  button: {
+    cursor: 'pointer',
   },
 });

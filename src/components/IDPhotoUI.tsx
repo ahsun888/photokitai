@@ -1,5 +1,6 @@
 import { View, Image, StyleSheet, Text, ScrollView } from 'react-native';
-import { Button, Chip } from 'react-native-paper';
+import { Chip } from 'react-native-paper';
+import WebPressable from './WebPressable';
 import { i18n } from '../i18n';
 
 type Props = {
@@ -45,10 +46,39 @@ export const IDPhotoUI = ({
       )}
 
       <View style={styles.buttons}>
-        <Button mode="contained" onPress={onPick}>📷 {i18n.t('gallery')}</Button>
-        {originalUri && <Button mode="contained" loading={loading} onPress={onRemoveBg}>✨ {i18n.t('ai_cutout')}</Button>}
-        {resultUri && <Button mode="contained" onPress={onSave}>💾 {i18n.t('save')}</Button>}
-        {!isVip && <Button mode="contained" onPress={onWatchAd}>🎬 {i18n.t('watch_ad')}</Button>}
+        <WebPressable
+          style={[styles.button, styles.primaryButton]}
+          onPress={onPick}
+        >
+          <Text style={styles.buttonText}>📷 {i18n.t('gallery')}</Text>
+        </WebPressable>
+        
+        {originalUri && (
+          <WebPressable
+            style={[styles.button, styles.primaryButton]}
+            onPress={onRemoveBg}
+          >
+            <Text style={styles.buttonText}>✨ {i18n.t('ai_cutout')}</Text>
+          </WebPressable>
+        )}
+        
+        {resultUri && (
+          <WebPressable
+            style={[styles.button, styles.primaryButton]}
+            onPress={onSave}
+          >
+            <Text style={styles.buttonText}>💾 {i18n.t('save')}</Text>
+          </WebPressable>
+        )}
+        
+        {!isVip && (
+          <WebPressable
+            style={[styles.button, styles.secondaryButton]}
+            onPress={onWatchAd}
+          >
+            <Text style={styles.buttonText}>🎬 {i18n.t('watch_ad')}</Text>
+          </WebPressable>
+        )}
       </View>
     </ScrollView>
   );
@@ -61,7 +91,23 @@ const styles = StyleSheet.create({
   img: { width:'100%', height:'100%', resizeMode:'contain' },
   empty: { color:'#999' },
   chipRow: { flexDirection:'row', gap:8, marginVertical:16, justifyContent:'center' },
-  buttons: { gap:12 }
+  buttons: { gap:12 },
+  button: {
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  primaryButton: {
+    backgroundColor: '#007AFF',
+  },
+  secondaryButton: {
+    backgroundColor: '#FF6600',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default IDPhotoUI;
