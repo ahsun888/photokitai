@@ -3,9 +3,25 @@ import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 type BGColor = 'white' | 'red' | 'blue';
 
+export type IDPhotoSize = {
+  name: string;
+  width: number;
+  height: number;
+  label: string;
+};
+
+export const ID_PHOTO_SIZES: IDPhotoSize[] = [
+  { name: '1inch', width: 295, height: 413, label: '1寸' },
+  { name: '2inch', width: 413, height: 579, label: '2寸' },
+  { name: 'passport', width: 600, height: 600, label: '护照' },
+  { name: 'visa', width: 567, height: 390, label: '签证' },
+  { name: 'id_card', width: 358, height: 441, label: '身份证' },
+];
+
 export const useBgColor = (cutoutUri: string | null) => {
   const [bgColor, setBgColor] = useState<BGColor>('white');
   const [resultUri, setResultUri] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<IDPhotoSize>(ID_PHOTO_SIZES[0]);
 
   const applyBg = async (color: BGColor) => {
     if (!cutoutUri) return;
@@ -18,5 +34,17 @@ export const useBgColor = (cutoutUri: string | null) => {
     setBgColor(color);
   };
 
-  return { bgColor, resultUri, applyBg, setResultUri };
+  const changeSize = (size: IDPhotoSize) => {
+    setSelectedSize(size);
+  };
+
+  return { 
+    bgColor, 
+    resultUri, 
+    applyBg, 
+    setResultUri,
+    selectedSize,
+    changeSize,
+    sizes: ID_PHOTO_SIZES
+  };
 };

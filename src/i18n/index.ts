@@ -50,6 +50,8 @@ const translations = {
     gallery_permission: 'Gallery permission required',
     ok: 'OK',
     cancel: 'Cancel',
+    background_color: 'Background Color',
+    photo_size: 'Photo Size',
   },
   zh: {
     app_name: 'PhotoKit AI',
@@ -99,6 +101,8 @@ const translations = {
     gallery_permission: '请开启相册权限',
     ok: '确定',
     cancel: '取消',
+    background_color: '背景颜色',
+    photo_size: '照片尺寸',
   },
   ja: {
     app_name: 'PhotoKit AI',
@@ -148,6 +152,8 @@ const translations = {
     gallery_permission: 'ギャラリー権限を有効にしてください',
     ok: 'OK',
     cancel: 'キャンセル',
+    background_color: '背景色',
+    photo_size: '写真サイズ',
   },
   ko: {
     app_name: 'PhotoKit AI',
@@ -197,6 +203,8 @@ const translations = {
     gallery_permission: '갤러리 권한을 활성화하세요',
     ok: '확인',
     cancel: '취소',
+    background_color: '배경색',
+    photo_size: '사진 크기',
   },
   es: {
     app_name: 'PhotoKit AI',
@@ -246,6 +254,8 @@ const translations = {
     gallery_permission: 'Por favor active el permiso de galería',
     ok: 'OK',
     cancel: 'Cancelar',
+    background_color: 'Color de Fondo',
+    photo_size: 'Tamaño de Foto',
   },
   fr: {
     app_name: 'PhotoKit AI',
@@ -295,6 +305,8 @@ const translations = {
     gallery_permission: 'Veuillez activer le permiso de galerie',
     ok: 'OK',
     cancel: 'Annuler',
+    background_color: 'Couleur de Fond',
+    photo_size: 'Taille de Photo',
   },
   de: {
     app_name: 'PhotoKit AI',
@@ -344,6 +356,8 @@ const translations = {
     gallery_permission: 'Bitte Galerie-Berechtigung aktivieren',
     ok: 'OK',
     cancel: 'Abbrechen',
+    background_color: 'Hintergrundfarbe',
+    photo_size: 'Foto-Größe',
   },
   pt: {
     app_name: 'PhotoKit AI',
@@ -393,6 +407,8 @@ const translations = {
     gallery_permission: 'Por favor ative a permissão da galeria',
     ok: 'OK',
     cancel: 'Cancelar',
+    background_color: 'Cor de Fundo',
+    photo_size: 'Tamanho da Foto',
   },
   ru: {
     app_name: 'PhotoKit AI',
@@ -442,6 +458,8 @@ const translations = {
     gallery_permission: 'Пожалуйста включите разрешение галереи',
     ok: 'OK',
     cancel: 'Отмена',
+    background_color: 'Цвет Фона',
+    photo_size: 'Размер Фото',
   },
   ar: {
     app_name: 'PhotoKit AI',
@@ -466,7 +484,7 @@ const translations = {
     blue_bg: 'أزرق',
     red_bg: 'أحمر',
     unlock_vip: 'فتح المميزة',
-    vip_benefits: 'صور هوية غير محدودة | بدون علامة مائية | بدون إعلانات | تصدير HD',
+    vip_benefits: 'صور هوية غير محدود • بدون علامة مائية • بدون إعلانات • تصدير HD',
     weekly: 'أسبوعي',
     monthly: 'شهري',
     yearly: 'سنوي',
@@ -491,10 +509,12 @@ const translations = {
     gallery_permission: 'الرجاء تفعيل إذن المعرض',
     ok: 'موافق',
     cancel: 'إلغاء',
+    background_color: 'لون الخلفية',
+    photo_size: 'حجم الصورة',
   },
   hi: {
     app_name: 'PhotoKit AI',
-    app_subtitle: 'एक क्लिक में पहचान पत्र фото, पुरानी फोटो रिस्टोर, कार्टून अवतार',
+    app_subtitle: 'एक क्लिक में पहचान पत्र फोटो, पुरानी फोटो रिस्टोर, कार्टून अवतार',
     id_photo: 'AI पहचान पत्र फोटो',
     id_photo_desc: 'एक क्लिक में मानक पहचान पत्र, लाल/नीली/सफेद पृष्ठभूमि',
     old_photo: 'पुरानी फोटो रिस्टोर',
@@ -540,6 +560,8 @@ const translations = {
     gallery_permission: 'कृपया गैलरी अनुमति सक्षम करें',
     ok: 'ठीक है',
     cancel: 'रद्द करें',
+    background_color: 'पृष्ठभूमि का रंग',
+    photo_size: 'फोटो का आकार',
   },
 };
 

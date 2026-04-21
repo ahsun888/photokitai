@@ -1,7 +1,8 @@
-import { View, Image, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, Image, StyleSheet, Text, ScrollView, ScrollViewProps } from 'react-native';
 import { Chip } from 'react-native-paper';
 import WebPressable from './WebPressable';
 import { i18n } from '../i18n';
+import { IDPhotoSize } from '../hooks/useBgColor';
 
 type Props = {
   originalUri: string | null;
@@ -12,9 +13,12 @@ type Props = {
   freeCount: number;
   adCount: number;
   isVip: boolean;
+  selectedSize: IDPhotoSize;
+  sizes: IDPhotoSize[];
   onPick: () => void;
   onRemoveBg: () => void;
   onApplyBg: (color: any) => void;
+  onChangeSize: (size: IDPhotoSize) => void;
   onSave: () => void;
   onWatchAd: () => void;
 };
@@ -22,7 +26,8 @@ type Props = {
 export const IDPhotoUI = ({
   originalUri, cutoutUri, resultUri, loading,
   bgColor, freeCount, adCount, isVip,
-  onPick, onRemoveBg, onApplyBg, onSave, onWatchAd
+  selectedSize, sizes,
+  onPick, onRemoveBg, onApplyBg, onChangeSize, onSave, onWatchAd
 }: Props) => {
   return (
     <ScrollView style={styles.container}>
@@ -38,11 +43,34 @@ export const IDPhotoUI = ({
       </View>
 
       {cutoutUri && (
-        <View style={styles.chipRow}>
-          <Chip selected={bgColor==='white'} onPress={()=>onApplyBg('white')}>{i18n.t('white_bg')}</Chip>
-          <Chip selected={bgColor==='blue'} onPress={()=>onApplyBg('blue')}>{i18n.t('blue_bg')}</Chip>
-          <Chip selected={bgColor==='red'} onPress={()=>onApplyBg('red')}>{i18n.t('red_bg')}</Chip>
-        </View>
+        <>
+          <Text style={styles.sectionTitle}>{i18n.t('background_color')}</Text>
+          <View style={styles.chipRow}>
+            <Chip selected={bgColor==='white'} onPress={()=>onApplyBg('white')}>{i18n.t('white_bg')}</Chip>
+            <Chip selected={bgColor==='blue'} onPress={()=>onApplyBg('blue')}>{i18n.t('blue_bg')}</Chip>
+            <Chip selected={bgColor==='red'} onPress={()=>onApplyBg('red')}>{i18n.t('red_bg')}</Chip>
+          </View>
+
+          <Text style={styles.sectionTitle}>{i18n.t('photo_size')}</Text>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            style={styles.sizeScroll}
+          >
+            <View style={styles.sizeRow}>
+              {sizes.map((size) => (
+                <Chip 
+                  key={size.name}
+                  selected={selectedSize.name === size.name} 
+                  onPress={()=>onChangeSize(size)}
+                  style={styles.sizeChip}
+                >
+                  {size.label}
+                </Chip>
+              ))}
+            </View>
+          </ScrollView>
+        </>
       )}
 
       <View style={styles.buttons}>
@@ -90,7 +118,24 @@ const styles = StyleSheet.create({
   preview: { width:'100%', height:420, backgroundColor:'#f6f6f6', borderRadius:12, justifyContent:'center', alignItems:'center' },
   img: { width:'100%', height:'100%', resizeMode:'contain' },
   empty: { color:'#999' },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 8,
+  },
   chipRow: { flexDirection:'row', gap:8, marginVertical:16, justifyContent:'center' },
+  sizeScroll: {
+    marginBottom: 16,
+  },
+  sizeRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    gap: 8,
+  },
+  sizeChip: {
+    marginHorizontal: 4,
+  },
   buttons: { gap:12 },
   button: {
     padding: 16,
