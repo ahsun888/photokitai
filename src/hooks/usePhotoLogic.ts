@@ -5,9 +5,8 @@ import { useUserStore } from '../../store/userStore';
 
 // 多API Key轮询
 const API_KEYS = [
-  "你的KEY1",
-  "你的KEY2",
-  "你的KEY3",
+  "Xge3Ng1EGMJ17rDFNFXqGiA4",
+  "kdWrDs3BrxmRBFcsWHKZgmAJ",
 ];
 const getApiKey = () => API_KEYS[Math.floor(Math.random() * API_KEYS.length)];
 
