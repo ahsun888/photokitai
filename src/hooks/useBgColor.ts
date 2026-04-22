@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 type BGColor = 'white' | 'red' | 'blue';
@@ -26,13 +26,26 @@ export const useBgColor = (cutoutUri: string | null) => {
   const applyBg = async (color: BGColor) => {
     if (!cutoutUri) return;
     const colorMap = { white: '#fff', red: '#ff0000', blue: '#0000ff' };
-    const res = await manipulateAsync(cutoutUri, [], {
-      format: SaveFormat.PNG,
-      backgroundColor: colorMap[color]
-    });
-    setResultUri(res.uri);
-    setBgColor(color);
+    try {
+      const res = await manipulateAsync(cutoutUri, [], {
+        format: SaveFormat.PNG,
+        backgroundColor: colorMap[color]
+      });
+      setResultUri(res.uri);
+      setBgColor(color);
+    } catch (error) {
+      console.error('应用背景失败:', error);
+    }
   };
+
+  // 当cutoutUri变化时，自动应用当前背景颜色
+  useEffect(() => {
+    if (cutoutUri) {
+      applyBg(bgColor);
+    } else {
+      setResultUri(null);
+    }
+  }, [cutoutUri, bgColor]);
 
   const changeSize = (size: IDPhotoSize) => {
     setSelectedSize(size);

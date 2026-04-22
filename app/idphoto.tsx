@@ -18,7 +18,7 @@ export default function IDPhotoScreen() {
     selectedSize, changeSize, sizes
   } = useBgColor(cutoutUri);
 
-  const { save } = useSavePhoto(resultUri, isVip);
+  const { save, saving } = useSavePhoto(resultUri, isVip);
 
   const handleApplyBg = (color: string) => {
     applyBg(color as any);
@@ -39,6 +39,7 @@ export default function IDPhotoScreen() {
         cutoutUri={cutoutUri}
         resultUri={resultUri}
         loading={loading}
+        saving={saving}
         bgColor={bgColor}
         freeCount={freeCount}
         adCount={adCount}

@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Text, ScrollView, ScrollViewProps } from 'react-native';
+import { View, Image, StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { Chip } from 'react-native-paper';
 import WebPressable from './WebPressable';
 import { i18n } from '../i18n';
@@ -9,6 +9,7 @@ type Props = {
   cutoutUri: string | null;
   resultUri: string | null;
   loading: boolean;
+  saving: boolean;
   bgColor: string;
   freeCount: number;
   adCount: number;
@@ -24,7 +25,7 @@ type Props = {
 };
 
 export const IDPhotoUI = ({
-  originalUri, cutoutUri, resultUri, loading,
+  originalUri, cutoutUri, resultUri, loading, saving,
   bgColor, freeCount, adCount, isVip,
   selectedSize, sizes,
   onPick, onRemoveBg, onApplyBg, onChangeSize, onSave, onWatchAd
@@ -40,6 +41,12 @@ export const IDPhotoUI = ({
          cutoutUri ? <Image source={{uri: cutoutUri}} style={styles.img} /> :
          originalUri ? <Image source={{uri: originalUri}} style={styles.img} /> :
          <Text style={styles.empty}>{i18n.t('please_select')}</Text>}
+        {loading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color="#007AFF" />
+            <Text style={styles.loadingText}>{i18n.t('processing')}</Text>
+          </View>
+        )}
       </View>
 
       {cutoutUri && (
@@ -86,7 +93,14 @@ export const IDPhotoUI = ({
             style={[styles.button, styles.primaryButton]}
             onPress={onRemoveBg}
           >
-            <Text style={styles.buttonText}>✨ {i18n.t('ai_cutout')}</Text>
+            {loading ? (
+              <View style={styles.buttonContent}>
+                <ActivityIndicator size="small" color="#fff" />
+                <Text style={[styles.buttonText, styles.loadingButtonText]}>{i18n.t('processing')}</Text>
+              </View>
+            ) : (
+              <Text style={styles.buttonText}>✨ {i18n.t('ai_cutout')}</Text>
+            )}
           </WebPressable>
         )}
         
@@ -95,7 +109,14 @@ export const IDPhotoUI = ({
             style={[styles.button, styles.primaryButton]}
             onPress={onSave}
           >
-            <Text style={styles.buttonText}>💾 {i18n.t('save')}</Text>
+            {saving ? (
+              <View style={styles.buttonContent}>
+                <ActivityIndicator size="small" color="#fff" />
+                <Text style={[styles.buttonText, styles.loadingButtonText]}>{i18n.t('saving')}</Text>
+              </View>
+            ) : (
+              <Text style={styles.buttonText}>💾 {i18n.t('save')}</Text>
+            )}
           </WebPressable>
         )}
         
@@ -115,9 +136,35 @@ export const IDPhotoUI = ({
 const styles = StyleSheet.create({
   container: { flex:1, backgroundColor:'#fff', padding:16 },
   count: { textAlign:'center', marginBottom:10, color:'#666' },
-  preview: { width:'100%', height:420, backgroundColor:'#f6f6f6', borderRadius:12, justifyContent:'center', alignItems:'center' },
+  preview: { 
+    width:'100%', 
+    height:420, 
+    backgroundColor:'#f6f6f6', 
+    borderRadius:12, 
+    justifyContent:'center', 
+    alignItems:'center',
+    position: 'relative',
+  },
   img: { width:'100%', height:'100%', resizeMode:'contain' },
   empty: { color:'#999' },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    zIndex: 1000,
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 18,
+    color: '#007AFF',
+    fontWeight: '600',
+  },
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -141,6 +188,14 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  loadingButtonText: {
+    marginLeft: 8,
   },
   primaryButton: {
     backgroundColor: '#007AFF',

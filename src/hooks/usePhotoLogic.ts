@@ -65,6 +65,12 @@ export const usePhotoLogic = () => {
         headers: { 'X-Api-Key': getApiKey() },
         body: formData,
       });
+
+      if (!resp.ok) {
+        const errorData = await resp.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `API错误: ${resp.status}`);
+      }
+
       const data = await resp.blob();
       const uri = URL.createObjectURL(data);
       setCutoutUri(uri);
@@ -74,7 +80,19 @@ export const usePhotoLogic = () => {
         adCount > 0 ? useAdCount() : useFreeCount();
       }
     } catch (e) {
-      Alert.alert('抠图失败', '请检查网络或稍后重试');
+      const errorMessage = e instanceof Error ? e.message : '未知错误';
+      let friendlyMessage = '抠图失败';
+      let detailedMessage = '请检查网络或稍后重试';
+
+      if (errorMessage.includes('Network')) {
+        detailedMessage = '网络连接失败，请检查网络设置';
+      } else if (errorMessage.includes('API错误')) {
+        detailedMessage = '服务器暂时不可用，请稍后重试';
+      } else if (errorMessage.includes('quota')) {
+        detailedMessage = 'API调用次数已达上限，请稍后重试';
+      }
+
+      Alert.alert(friendlyMessage, detailedMessage);
     } finally {
       setLoading(false);
     }
