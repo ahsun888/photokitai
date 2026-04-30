@@ -1,60 +1,40 @@
 import { View, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import IDPhotoUI from '../src/components/IDPhotoUI';
-import { usePhotoLogic } from '../src/hooks/usePhotoLogic';
-import { useBgColor } from '../src/hooks/useBgColor';
-import { useSavePhoto } from '../src/hooks/useSavePhoto';
-import { IDPhotoSize } from '../src/utils/imageProcessor';
 import { useLanguageStore } from '../store/languageStore';
+import { useTranslation } from '../src/hooks/useTranslation';
+import { useCartoon } from '../src/hooks/useCartoon';
+import { useSaveCartoon } from '../src/hooks/useSaveCartoon';
+import CartoonUI from '../src/components/CartoonUI';
 
-export default function IDPhotoScreen() {
+export default function CartoonScreen() {
   const languageKey = useLanguageStore((state) => state.languageKey);
+  const { t } = useTranslation();
 
   const {
-    originalUri, cutoutUri, loading,
+    originalUri, cartoonUri, loading,
     freeCount, adCount, isVip,
-    pickImage, doRemoveBg, watchAd,
-  } = usePhotoLogic();
+    pickImage, applyCartoon, watchAd,
+  } = useCartoon();
 
-  const {
-    bgColor, resultUri, applyBg,
-    selectedSize, changeSize, sizes, processing
-  } = useBgColor(cutoutUri);
-
-  const { save, saving } = useSavePhoto(resultUri, isVip);
-
-  const handleApplyBg = (color: string) => {
-    applyBg(color as any);
-  };
-
-  const handleChangeSize = (size: IDPhotoSize) => {
-    changeSize(size);
-  };
+  const { save, saving } = useSaveCartoon(cartoonUri, isVip);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']} key={languageKey}>
       <View style={styles.header}>
         <Text style={styles.backArrow}>‹</Text>
-        <Text style={styles.title}>AI 证件照</Text>
+        <Text style={styles.title}>🏯 {t('cartoon')}</Text>
       </View>
 
-      <IDPhotoUI
+      <CartoonUI
         originalUri={originalUri}
-        cutoutUri={cutoutUri}
-        resultUri={resultUri}
+        cartoonUri={cartoonUri}
         loading={loading}
         saving={saving}
-        processing={processing}
-        bgColor={bgColor}
         freeCount={freeCount}
         adCount={adCount}
         isVip={isVip}
-        selectedSize={selectedSize}
-        sizes={sizes}
         onPick={pickImage}
-        onRemoveBg={doRemoveBg}
-        onApplyBg={handleApplyBg}
-        onChangeSize={handleChangeSize}
+        onCartoon={applyCartoon}
         onSave={save}
         onWatchAd={watchAd}
       />

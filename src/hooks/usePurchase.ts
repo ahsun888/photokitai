@@ -6,23 +6,42 @@ import Purchases, {
 import { useUserStore } from '../../store/userStore';
 
 const REVENUECAT_KEY = Platform.OS === 'ios'
-  ? '苹果APPLE_KEY'
-  : '谷歌GOOGLE_KEY';
+  ? 'apple_api_key_here'
+  : Platform.OS === 'android'
+  ? 'google_api_key_here'
+  : '';
 
 export function usePurchase() {
   const setVip = useUserStore((s) => s.setVip);
 
   useEffect(() => {
     async function init() {
-      await Purchases.configure({ apiKey: REVENUECAT_KEY });
-      const info = await Purchases.getCustomerInfo();
-      const isPro = info.entitlements.active['pro'] !== undefined;
-      setVip(isPro);
+      if (Platform.OS === 'web') {
+        return;
+      }
+
+      if (!REVENUECAT_KEY) {
+        console.log('RevenueCat API key not configured');
+        return;
+      }
+
+      try {
+        await Purchases.configure({ apiKey: REVENUECAT_KEY });
+        const info = await Purchases.getCustomerInfo();
+        const isPro = info.entitlements.active['pro'] !== undefined;
+        setVip(isPro);
+      } catch (e) {
+        console.log('RevenueCat initialization error:', e);
+      }
     }
     init();
   }, []);
 
   const purchasePackage = async (pkg: PurchasesPackage) => {
+    if (Platform.OS === 'web') {
+      return false;
+    }
+
     try {
       const res = await Purchases.purchasePackage(pkg);
       const isPro = res.entitlements.active['pro'] !== undefined;
@@ -34,10 +53,18 @@ export function usePurchase() {
   };
 
   const restore = async () => {
-    const res = await Purchases.restorePurchases();
-    const isPro = res.entitlements.active['pro'] !== undefined;
-    setVip(isPro);
-    return isPro;
+    if (Platform.OS === 'web') {
+      return false;
+    }
+
+    try {
+      const res = await Purchases.restorePurchases();
+      const isPro = res.entitlements.active['pro'] !== undefined;
+      setVip(isPro);
+      return isPro;
+    } catch (e) {
+      return false;
+    }
   };
 
   return { purchasePackage, restore };

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import {
   View,
-  Modal,
-  TouchableOpacity,
   StyleSheet,
   Text,
+  TouchableOpacity,
+  Modal,
   ScrollView,
-  Pressable,
 } from 'react-native';
 import { languages, i18n } from '../i18n';
+import { useLanguageStore } from '../../store/languageStore';
 
 type LanguageSelectorProps = {
   onLanguageChange?: (code: string) => void;
@@ -16,10 +16,15 @@ type LanguageSelectorProps = {
 
 export const LanguageSelector = ({ onLanguageChange }: LanguageSelectorProps) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const currentLang = languages.find((l) => l.code === i18n.locale) || languages[0];
+  const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+  const setLanguage = useLanguageStore((state) => state.setLanguage);
+  const forceUpdate = useLanguageStore((state) => state.forceUpdate);
+  const currentLang = languages.find((l) => l.code === currentLanguage) || languages[0];
 
   const handleSelectLanguage = (code: string) => {
+    setLanguage(code);
     i18n.locale = code;
+    forceUpdate();
     setModalVisible(false);
     if (onLanguageChange) {
       onLanguageChange(code);
@@ -27,13 +32,14 @@ export const LanguageSelector = ({ onLanguageChange }: LanguageSelectorProps) =>
   };
 
   return (
-    <>
+    <View style={styles.container}>
       <TouchableOpacity
         style={styles.selector}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={styles.flag}>{currentLang.flag}</Text>
+        <Text style={styles.flag}>🌐</Text>
         <Text style={styles.langName}>{currentLang.nativeName}</Text>
+        <Text style={styles.arrow}>▼</Text>
       </TouchableOpacity>
 
       <Modal
@@ -42,10 +48,14 @@ export const LanguageSelector = ({ onLanguageChange }: LanguageSelectorProps) =>
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <Pressable style={styles.modalOverlay} onPress={() => setModalVisible(false)}>
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setModalVisible(false)}
+        >
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{i18n.t('select_language')}</Text>
+              <Text style={styles.modalTitle}>🌐 选择语言</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Text style={styles.closeButton}>✕</Text>
               </TouchableOpacity>
@@ -56,7 +66,7 @@ export const LanguageSelector = ({ onLanguageChange }: LanguageSelectorProps) =>
                   key={lang.code}
                   style={[
                     styles.langItem,
-                    currentLang.code === lang.code && styles.selectedLang,
+                    currentLanguage === lang.code && styles.selectedLang,
                   ]}
                   onPress={() => handleSelectLanguage(lang.code)}
                 >
@@ -65,35 +75,47 @@ export const LanguageSelector = ({ onLanguageChange }: LanguageSelectorProps) =>
                     <Text style={styles.nativeName}>{lang.nativeName}</Text>
                     <Text style={styles.englishName}>{lang.name}</Text>
                   </View>
-                  {currentLang.code === lang.code && (
+                  {currentLanguage === lang.code && (
                     <Text style={styles.checkmark}>✓</Text>
                   )}
                 </TouchableOpacity>
               ))}
             </ScrollView>
           </View>
-        </Pressable>
+        </TouchableOpacity>
       </Modal>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 8,
+    alignItems: 'center',
+  },
   selector: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderRadius: 20,
-    gap: 6,
+    gap: 8,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
   },
   flag: {
-    fontSize: 20,
+    fontSize: 18,
   },
   langName: {
     fontSize: 14,
     color: '#333',
+    fontWeight: '500',
+  },
+  arrow: {
+    fontSize: 10,
+    color: '#999',
+    marginLeft: 4,
   },
   modalOverlay: {
     flex: 1,
@@ -155,7 +177,7 @@ const styles = StyleSheet.create({
   },
   checkmark: {
     fontSize: 20,
-    color: '#4A6FFF',
+    color: '#007AFF',
     fontWeight: 'bold',
   },
 });
